@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>CBT | Pendidikan Pancasila VII | Ulangan Harian Bab 2</title>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.10/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{color-scheme:light}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#083344,#075985 48%,#1e40af);min-height:100vh}button,input,textarea{font:inherit}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}.exam-lock,.exam-lock *{-webkit-user-select:none;user-select:none}.exam-lock textarea{-webkit-user-select:none;user-select:none}.card{background:#fff;border:1px solid #e0f2fe;border-radius:24px;box-shadow:0 14px 35px #082f4933}.btn{display:inline-flex;justify-content:center;align-items:center;gap:.5rem;border-radius:14px;padding:.8rem 1.15rem;font-weight:700;transition:background .15s,transform .15s}.btn:disabled{opacity:.5;cursor:not-allowed}.primary{background:#0369a1;color:white}.primary:hover:not(:disabled){background:#075985}.secondary{background:#e0f2fe;color:#075985}.secondary:hover:not(:disabled){background:#bae6fd}.danger{background:#b91c1c;color:white}.danger:hover:not(:disabled){background:#991b1b}.field{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:.8rem 1rem;background:white;color:#0f172a}.field:focus{border-color:#0284c7}.fade{animation:appear .18s ease-out}@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}.wordwrap{overflow-wrap:anywhere}.question-text{white-space:pre-wrap;line-height:1.8}.modal-panel{max-height:90vh;overflow:auto}.progress-bar{transition:width .2s}.tabular{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="root"><div style="color:white;padding:2rem;font-family:system-ui">Memuat aplikasi CBT… Pastikan koneksi internet tersedia untuk memuat pustaka. Jika tampilan tidak berubah, periksa koneksi dan konsol browser.</div></div>
+<noscript>Aktifkan JavaScript untuk menjalankan ujian.</noscript>
+<script type="text/babel" data-presets="react">
+'use strict';
+const GOOGLE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwS-QoBhd9FqZ0sGwJr6gCl_qmrIJIhyVscdHNiyT1ANX6lfA2LFZHEqILix5FYZPpY/exec";
+const EXAM = Object.freeze({mapel:'Pendidikan Pancasila', jenis:'Ulangan Harian Bab 2', kelas:'VII', topik:'Penerapan Nilai-Nilai Pancasila', duration:90*60, id:'pancasila_vii_bab_2'});
+const STORAGE_KEY = 'cbt_pendidikan_pancasila_vii_bab_2';
+const SESSION_VERSION = 1;
+const rawQuestionsData = 
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "prompt": "Dalam bahasa Sanskerta, kata Pancasila berarti ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "lima tujuan"
+      },
+      {
+        "id": "B",
+        "text": "lima dasar"
+      },
+      {
+        "id": "C",
+        "text": "lima aturan sekolah"
+      },
+      {
+        "id": "D",
+        "text": "lima lambang negara"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "prompt": "Nilai utama yang terkandung dalam sila pertama Pancasila adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "persatuan"
+      },
+      {
+        "id": "B",
+        "text": "kerakyatan"
+      },
+      {
+        "id": "C",
+        "text": "keadilan sosial"
+      },
+      {
+        "id": "D",
+        "text": "ketuhanan"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "prompt": "Makna adil dalam sila kedua Pancasila adalah bertindak dan mengambil keputusan dengan ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "tidak memihak dan berdasarkan kebenaran"
+      },
+      {
+        "id": "B",
+        "text": "mengutamakan teman dekat"
+      },
+      {
+        "id": "C",
+        "text": "mengikuti keinginan pribadi"
+      },
+      {
+        "id": "D",
+        "text": "mendahulukan orang yang berkuasa"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "prompt": "Lambang sila Persatuan Indonesia adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "rantai"
+      },
+      {
+        "id": "B",
+        "text": "kepala banteng"
+      },
+      {
+        "id": "C",
+        "text": "pohon beringin"
+      },
+      {
+        "id": "D",
+        "text": "bintang"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "prompt": "Nilai kerakyatan terkandung dalam sila Pancasila yang ke ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "dua"
+      },
+      {
+        "id": "B",
+        "text": "empat"
+      },
+      {
+        "id": "C",
+        "text": "tiga"
+      },
+      {
+        "id": "D",
+        "text": "lima"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "prompt": "Tujuan utama nilai keadilan sosial adalah mewujudkan kehidupan rakyat yang ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "bebas tanpa kewajiban"
+      },
+      {
+        "id": "B",
+        "text": "seragam dalam keyakinan"
+      },
+      {
+        "id": "C",
+        "text": "adil dan makmur"
+      },
+      {
+        "id": "D",
+        "text": "unggul secara pribadi"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "prompt": "Contoh penerapan sila pertama dalam kehidupan bermasyarakat adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "beribadah sesuai agama masing-masing dengan tertib"
+      },
+      {
+        "id": "B",
+        "text": "membatasi ibadah orang lain"
+      },
+      {
+        "id": "C",
+        "text": "memaksa tetangga mengikuti agama kita"
+      },
+      {
+        "id": "D",
+        "text": "mengganggu kegiatan ibadah"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "prompt": "Menjadi relawan kemanusiaan merupakan contoh penerapan nilai utama sila ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "pertama"
+      },
+      {
+        "id": "B",
+        "text": "ketiga"
+      },
+      {
+        "id": "C",
+        "text": "keempat"
+      },
+      {
+        "id": "D",
+        "text": "kedua"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "prompt": "Berteman tanpa membedakan suku merupakan contoh penerapan nilai utama ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "persatuan"
+      },
+      {
+        "id": "B",
+        "text": "ketuhanan"
+      },
+      {
+        "id": "C",
+        "text": "kerakyatan"
+      },
+      {
+        "id": "D",
+        "text": "keadilan sosial"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "prompt": "Pemilihan ketua kelas merupakan contoh penerapan nilai utama sila ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "pertama"
+      },
+      {
+        "id": "B",
+        "text": "keempat"
+      },
+      {
+        "id": "C",
+        "text": "kedua"
+      },
+      {
+        "id": "D",
+        "text": "kelima"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "prompt": "Dalam kehidupan bernegara, kebebasan memeluk agama dan kepercayaan warga negara dijamin oleh ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "kelompok teman"
+      },
+      {
+        "id": "B",
+        "text": "organisasi olahraga"
+      },
+      {
+        "id": "C",
+        "text": "keluarga saja"
+      },
+      {
+        "id": "D",
+        "text": "negara"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "prompt": "Pemerintahan dari rakyat, oleh rakyat, dan untuk rakyat mencerminkan nilai ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "ketuhanan"
+      },
+      {
+        "id": "B",
+        "text": "persatuan"
+      },
+      {
+        "id": "C",
+        "text": "kerakyatan"
+      },
+      {
+        "id": "D",
+        "text": "keadilan sosial"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "prompt": "Sila-sila Pancasila saling berkaitan. Makna pernyataan tersebut adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "kelima sila menjadi satu kesatuan pedoman dalam kehidupan"
+      },
+      {
+        "id": "B",
+        "text": "setiap orang cukup menerapkan satu sila"
+      },
+      {
+        "id": "C",
+        "text": "sila tertentu boleh diabaikan jika sila lain diterapkan"
+      },
+      {
+        "id": "D",
+        "text": "setiap sila memiliki tujuan yang saling bertentangan"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "prompt": "Mengapa menghormati perbedaan agama penting menurut makna sila pertama?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Agar semua orang akhirnya memeluk agama yang sama."
+      },
+      {
+        "id": "B",
+        "text": "Agar warga hanya bergaul dengan pemeluk agama sendiri."
+      },
+      {
+        "id": "C",
+        "text": "Agar kehidupan bersama tetap rukun, nyaman, dan aman."
+      },
+      {
+        "id": "D",
+        "text": "Agar kegiatan ibadah dapat ditentukan oleh kelompok terbanyak."
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "prompt": "Seorang siswa menolak mengejek temannya yang memiliki keterbatasan fisik. Makna sila kedua yang paling sesuai dengan sikap tersebut adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "mendahulukan kepentingan kelompok sendiri"
+      },
+      {
+        "id": "B",
+        "text": "menentukan keputusan melalui pemungutan suara"
+      },
+      {
+        "id": "C",
+        "text": "menjaga kelestarian budaya daerah"
+      },
+      {
+        "id": "D",
+        "text": "menghormati martabat setiap manusia"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "prompt": "Menjaga kelestarian budaya dan lingkungan alam Indonesia mencerminkan sila ketiga karena ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "mengharuskan semua daerah memiliki budaya sama"
+      },
+      {
+        "id": "B",
+        "text": "menunjukkan rasa cinta tanah air"
+      },
+      {
+        "id": "C",
+        "text": "membatasi hubungan dengan warga daerah lain"
+      },
+      {
+        "id": "D",
+        "text": "mengutamakan kekayaan pribadi"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "prompt": "Dalam pemilihan ketua kelas, semua siswa mendapat kesempatan yang sama untuk memilih dan dipilih. Makna sila keempat yang ditunjukkan adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "pemimpin berhak menentukan hasil pemilihan sendiri"
+      },
+      {
+        "id": "B",
+        "text": "hanya kelompok terbanyak yang boleh mengajukan pendapat"
+      },
+      {
+        "id": "C",
+        "text": "jabatan diberikan berdasarkan kedekatan dengan pemimpin"
+      },
+      {
+        "id": "D",
+        "text": "rakyat memiliki kesempatan berperan dalam proses pemilihan"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "prompt": "Keadilan sosial memperhatikan hak dan kewajiban setiap warga. Contoh yang paling sesuai adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menggunakan fasilitas bersama dan ikut merawatnya"
+      },
+      {
+        "id": "B",
+        "text": "menggunakan fasilitas bersama tanpa mau merawatnya"
+      },
+      {
+        "id": "C",
+        "text": "mengambil fasilitas untuk kepentingan pribadi"
+      },
+      {
+        "id": "D",
+        "text": "menyerahkan seluruh tanggung jawab kepada warga lain"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 19,
+    "type": "mc",
+    "prompt": "Tetangga akan melaksanakan ibadah ketika pemuda hendak mengadakan latihan musik. Tindakan terbaik para pemuda adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "tetap berlatih karena sudah membuat jadwal"
+      },
+      {
+        "id": "B",
+        "text": "menyesuaikan waktu latihan agar ibadah tidak terganggu"
+      },
+      {
+        "id": "C",
+        "text": "meminta tetangga menghentikan ibadah"
+      },
+      {
+        "id": "D",
+        "text": "membatalkan seluruh kegiatan warga selamanya"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 20,
+    "type": "mc",
+    "prompt": "Seorang teman sering ditolak dalam kelompok belajar karena berasal dari suku berbeda. Sikap yang paling mendukung persatuan adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "membentuk kelompok berdasarkan asal suku"
+      },
+      {
+        "id": "B",
+        "text": "menyuruhnya mencari teman dari daerah sendiri"
+      },
+      {
+        "id": "C",
+        "text": "mengajaknya belajar bersama tanpa membedakan asal suku"
+      },
+      {
+        "id": "D",
+        "text": "membiarkan penolakan agar kelompok tetap nyaman"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 21,
+    "type": "mc",
+    "prompt": "Dua teman berselisih tentang penggunaan lapangan. Cara menyelesaikan masalah sesuai nilai kerakyatan adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "memberikan lapangan kepada teman yang paling dekat"
+      },
+      {
+        "id": "B",
+        "text": "menyerahkan keputusan kepada teman yang paling keras berbicara"
+      },
+      {
+        "id": "C",
+        "text": "membahas kebutuhan keduanya dan mencari kesepakatan"
+      },
+      {
+        "id": "D",
+        "text": "membiarkan perselisihan sampai salah satu mengalah"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 22,
+    "type": "mc",
+    "prompt": "Siswa sedang mengantre di kantin. Temannya mengajak masuk dari depan agar cepat dilayani. Sikap yang sesuai dengan nilai keadilan sosial adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "mengikuti ajakan karena ingin cepat kembali ke kelas"
+      },
+      {
+        "id": "B",
+        "text": "meminta teman lain memberikan tempatnya"
+      },
+      {
+        "id": "C",
+        "text": "mendahului jika penjaga kantin tidak melihat"
+      },
+      {
+        "id": "D",
+        "text": "menolak ajakan dan tetap menunggu giliran"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 23,
+    "type": "mc",
+    "prompt": "Sebuah lembaga perwakilan rakyat telah mengambil keputusan melalui musyawarah mufakat. Sikap warga yang sesuai dengan sila keempat adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menganggap keputusan hanya berlaku bagi pihak yang setuju"
+      },
+      {
+        "id": "B",
+        "text": "menghormati keputusan bersama meskipun usul pribadinya tidak dipilih"
+      },
+      {
+        "id": "C",
+        "text": "menolak keputusan karena berbeda dari usulnya"
+      },
+      {
+        "id": "D",
+        "text": "meminta keputusan diganti tanpa pembahasan bersama"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 24,
+    "type": "mc",
+    "prompt": "Di lingkungan tempat tinggal Rani, para pemuda merencanakan kegiatan membersihkan taman pada hari Minggu pagi. Sebagian warga ingin kegiatan dimulai lebih awal agar cuaca belum panas. Namun, beberapa warga menyampaikan bahwa pada jam tersebut mereka sedang melaksanakan ibadah. Mereka tetap ingin mengikuti kegiatan kebersihan setelah ibadah selesai. Seorang anggota panitia berpendapat bahwa jadwal tidak perlu diubah karena sebagian besar warga sudah siap. Rani mengingatkan bahwa taman digunakan oleh semua warga dan kegiatan itu bertujuan mempererat hubungan antartetangga. Panitia masih memiliki kesempatan untuk menyesuaikan jadwal tanpa mengurangi pekerjaan yang telah direncanakan.\n\nTindakan panitia yang paling tepat untuk menyelesaikan persoalan tersebut adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menyesuaikan jadwal agar semua warga dapat beribadah dan mengikuti kegiatan"
+      },
+      {
+        "id": "B",
+        "text": "meminta warga yang beribadah meninggalkan ibadahnya"
+      },
+      {
+        "id": "C",
+        "text": "mempertahankan jadwal dan mengabaikan keberatan warga"
+      },
+      {
+        "id": "D",
+        "text": "membatasi keikutsertaan warga yang berbeda agama"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 25,
+    "type": "mc",
+    "prompt": "Hujan deras menyebabkan beberapa rumah di sekitar desa Dimas terendam air. Para pemuda membantu warga memindahkan barang dan mendirikan tempat istirahat sementara. Warga yang datang berasal dari berbagai lingkungan dan memiliki pekerjaan yang berbeda-beda. Ada seorang lanjut usia yang kesulitan membawa barang, seorang ibu yang membawa anak kecil, dan beberapa keluarga yang belum dikenal oleh para relawan. Salah seorang relawan mengusulkan agar bantuan lebih dahulu diberikan kepada orang yang dikenal oleh panitia. Dimas melihat bahwa seluruh korban membutuhkan pertolongan dan ingin agar pelayanan diberikan dengan sopan. Ia kemudian mengajak para relawan mempertimbangkan kembali usulan tersebut.\n\nKeputusan relawan yang paling mencerminkan penghormatan terhadap martabat manusia adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "mendahulukan korban yang berasal dari lingkungan relawan"
+      },
+      {
+        "id": "B",
+        "text": "menolak bantuan kepada warga yang tidak dikenal"
+      },
+      {
+        "id": "C",
+        "text": "membantu hanya warga yang dapat membalas kebaikan relawan"
+      },
+      {
+        "id": "D",
+        "text": "melayani seluruh korban dengan sopan tanpa membedakan latar belakang"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 26,
+    "type": "mc",
+    "prompt": "Sekolah mengadakan pameran budaya untuk memperkenalkan kekayaan Indonesia. Setiap kelompok membawa bahan pertunjukan dari daerah yang berbeda, seperti lagu, tarian, dan pakaian tradisional. Sebagian siswa ingin hanya menampilkan budaya yang paling dikenal agar persiapan lebih mudah. Siswa lain merasa usul itu membuat kelompok kecil kehilangan kesempatan memperkenalkan budaya mereka. Guru menjelaskan bahwa waktu pameran memang terbatas, tetapi setiap kelompok dapat menyesuaikan durasi penampilannya. Para siswa harus menyusun acara yang membuat seluruh kelompok merasa menjadi bagian dari kegiatan sekolah. Mereka berharap pengunjung dapat belajar menghargai perbedaan tanpa kehilangan rasa kebersamaan.\n\nPilihan yang paling sesuai dengan makna sila Persatuan Indonesia adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menghapus seluruh penampilan daerah selain budaya terbanyak"
+      },
+      {
+        "id": "B",
+        "text": "menampilkan beragam budaya daerah sebagai bagian dari kekayaan Indonesia"
+      },
+      {
+        "id": "C",
+        "text": "meminta tiap kelompok hanya menonton budaya sendiri"
+      },
+      {
+        "id": "D",
+        "text": "membatalkan pertunjukan karena adanya perbedaan budaya"
+      }
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "id": 27,
+    "type": "mc",
+    "prompt": "Kelas VII akan memilih ketua kelas baru. Guru meminta seluruh siswa menyusun aturan pemilihan sebelum mengajukan calon. Beberapa siswa ingin calon berasal dari kelompok mereka saja karena merasa kelompok tersebut paling aktif. Siswa lain mengusulkan agar siapa pun yang memenuhi aturan dapat menjadi calon. Ada pula usulan bahwa siswa yang pendiam tidak perlu memberikan suara karena jarang menyampaikan pendapat. Guru mengingatkan bahwa ketua kelas akan menjalankan tugas untuk seluruh siswa, bukan untuk kelompok tertentu. Setelah mendengar berbagai usulan, kelas perlu menetapkan cara pemilihan yang memberi kesempatan kepada semua siswa untuk berperan dan dapat diterima sebagai keputusan bersama.\n\nProses pemilihan yang paling sesuai dengan makna sila keempat adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menetapkan calon hanya dari kelompok yang paling populer"
+      },
+      {
+        "id": "B",
+        "text": "meminta ketua lama menentukan penggantinya sendiri"
+      },
+      {
+        "id": "C",
+        "text": "memberikan kesempatan yang sama kepada seluruh siswa untuk memilih dan dipilih"
+      },
+      {
+        "id": "D",
+        "text": "membatasi hak memilih pada siswa dengan nilai tertinggi"
+      }
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "id": 28,
+    "type": "mc",
+    "prompt": "Sebuah pemerintah daerah sedang menyusun cara pelayanan bagi warga yang akan menyelenggarakan kegiatan keagamaan. Warga berasal dari beragam agama dan kepercayaan. Beberapa perwakilan mengusulkan agar pelayanan hanya diberikan kepada kelompok yang jumlah anggotanya paling banyak, dengan alasan petugas dapat bekerja lebih cepat. Perwakilan lain mengingatkan bahwa setiap warga perlu mendapatkan perlindungan dalam menjalankan keyakinannya. Petugas kemudian mendengarkan masukan dari berbagai kelompok agar pelayanan tetap tertib dan tidak menimbulkan gangguan terhadap warga lain. Mereka perlu memilih kebijakan yang sesuai dengan tanggung jawab negara terhadap keberagaman agama dan kepercayaan masyarakat.\n\nKebijakan yang paling sesuai dengan penerapan sila pertama dalam kehidupan bernegara adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menjamin kebebasan semua warga menjalankan agama dan kepercayaan masing-masing"
+      },
+      {
+        "id": "B",
+        "text": "memberi kebebasan beribadah hanya kepada kelompok terbanyak"
+      },
+      {
+        "id": "C",
+        "text": "mewajibkan seluruh warga mengikuti satu agama"
+      },
+      {
+        "id": "D",
+        "text": "menyerahkan kebebasan beribadah pada persetujuan kelompok tertentu"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 29,
+    "type": "mc",
+    "prompt": "Beberapa daerah di Indonesia mengalami kesulitan setelah bencana alam. Dalam pertemuan bersama, perwakilan daerah membahas penggunaan persediaan bantuan yang jumlahnya terbatas. Salah satu daerah memiliki persediaan cukup untuk memenuhi kebutuhan warganya, sedangkan daerah lain membutuhkan tambahan makanan dan perlengkapan. Sebagian perwakilan menginginkan semua persediaan tetap berada di daerah masing-masing karena khawatir akan dianggap kurang memperjuangkan kepentingan daerahnya. Perwakilan lain mengajak semua pihak melihat keadaan masyarakat secara menyeluruh. Mereka perlu menentukan sikap agar kebutuhan mendesak dapat ditangani dan hubungan antardaerah tetap terjaga sebagai satu bangsa.\n\nSikap perwakilan daerah yang paling sesuai dengan sila ketiga dalam kehidupan bernegara adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menyimpan seluruh bantuan meskipun kebutuhan daerah lain lebih mendesak"
+      },
+      {
+        "id": "B",
+        "text": "menolak bekerja sama dengan daerah yang berbeda budaya"
+      },
+      {
+        "id": "C",
+        "text": "mendukung bantuan hanya jika daerah sendiri mendapat keuntungan terbesar"
+      },
+      {
+        "id": "D",
+        "text": "mengutamakan keselamatan bersama di atas kepentingan daerah sendiri"
+      }
+    ],
+    "correctAnswer": "D"
+  },
+  {
+    "id": 30,
+    "type": "mc",
+    "prompt": "Pemerintah suatu daerah berencana meningkatkan pelayanan kesehatan. Di pusat kota sudah tersedia beberapa tempat pelayanan, sedangkan warga di wilayah yang jauh harus menempuh perjalanan panjang untuk mendapatkan pemeriksaan. Dana yang tersedia belum cukup untuk membangun fasilitas di semua tempat sekaligus. Sebagian warga kota mengusulkan agar dana digunakan untuk menambah fasilitas di dekat rumah mereka karena jumlah pengunjung di kota cukup banyak. Warga dari wilayah lain menjelaskan kesulitan yang mereka alami selama ini. Pemerintah perlu mempertimbangkan keadaan seluruh masyarakat dan memilih langkah yang membuat kesempatan memperoleh pelayanan semakin baik bagi warga yang membutuhkan.\n\nKeputusan pemerintah yang paling mencerminkan tujuan sila kelima adalah ....",
+    "options": [
+      {
+        "id": "A",
+        "text": "menyediakan pelayanan berdasarkan kebutuhan masyarakat agar kesejahteraan makin merata"
+      },
+      {
+        "id": "B",
+        "text": "memusatkan seluruh pelayanan di wilayah yang sudah memiliki fasilitas lengkap"
+      },
+      {
+        "id": "C",
+        "text": "memberi pelayanan hanya kepada warga yang mampu membayar lebih"
+      },
+      {
+        "id": "D",
+        "text": "menentukan penerima pelayanan berdasarkan kedekatan dengan petugas"
+      }
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "id": 31,
+    "type": "short",
+    "prompt": "Jelaskan mengapa kelima sila Pancasila tidak boleh diterapkan secara terpisah. Tuliskan hubungan antarsila dan tujuan penerapannya.",
+    "rubric": [
+      "Unsur A (2 poin): Sila-sila saling berkaitan atau merupakan satu kesatuan.",
+      "Unsur B (2 poin): Menjadi pedoman hidup atau membantu mewujudkan tujuan bersama bangsa."
+    ],
+    "acceptedAnswers": [
+      "Kelima sila saling melengkapi agar kehidupan bersama berjalan baik.",
+      "Sila-sila merupakan satu kesatuan untuk mewujudkan tujuan bangsa.",
+      "Setiap sila saling berhubungan sebagai pedoman kehidupan masyarakat."
+    ]
+  },
+  {
+    "id": 32,
+    "type": "short",
+    "prompt": "Seorang siswa menghina temannya karena kondisi fisiknya. Tuliskan satu alasan perilaku itu bertentangan dengan sila kedua dan satu sikap yang seharusnya ditunjukkan.",
+    "rubric": [
+      "Unsur A (2 poin): Menghina merendahkan martabat manusia atau mengabaikan kesederajatan.",
+      "Unsur B (2 poin): Menghormati, tidak mengejek, memperlakukan dengan setara, atau membela teman secara sopan."
+    ],
+    "acceptedAnswers": [
+      "Menghina merendahkan martabat; seharusnya menghormati teman.",
+      "Semua manusia sederajat, jadi jangan mengejeknya.",
+      "Perilaku itu tidak menghargai manusia; perlakukan teman dengan setara."
+    ]
+  },
+  {
+    "id": 33,
+    "type": "short",
+    "prompt": "Mengapa menjaga budaya daerah termasuk penerapan sila ketiga? Tuliskan satu alasan dan satu tindakan yang dapat kamu lakukan.",
+    "rubric": [
+      "Unsur A (2 poin): Menjaga budaya menunjukkan cinta tanah air atau menghargai keberagaman bangsa.",
+      "Unsur B (2 poin): Contoh konkret: mempelajari, merawat, memperkenalkan, atau menampilkan budaya daerah."
+    ],
+    "acceptedAnswers": [
+      "Karena menunjukkan cinta tanah air; saya belajar tarian daerah.",
+      "Budaya adalah kekayaan bangsa; saya ikut melestarikan lagu daerah.",
+      "Menghargai keragaman Indonesia; saya memperkenalkan kesenian daerah."
+    ]
+  },
+  {
+    "id": 34,
+    "type": "short",
+    "prompt": "Temanmu memiliki waktu ibadah yang berbeda denganmu. Tuliskan satu sikap yang dapat kamu lakukan dan tujuan sikap tersebut bagi kehidupan bersama.",
+    "rubric": [
+      "Unsur A (2 poin): Memberi kesempatan beribadah, menyesuaikan kegiatan, atau tidak mengganggu ibadah.",
+      "Unsur B (2 poin): Menjaga kerukunan atau menciptakan kehidupan aman, nyaman, dan damai."
+    ],
+    "acceptedAnswers": [
+      "Memberinya waktu beribadah agar tetap rukun.",
+      "Tidak mengganggu ibadahnya supaya hubungan tetap damai.",
+      "Menyesuaikan jadwal kegiatan agar semua merasa nyaman."
+    ]
+  },
+  {
+    "id": 35,
+    "type": "short",
+    "prompt": "Saat bermain bersama, teman dekatmu meminta giliran tambahan sehingga teman lain belum memperoleh giliran. Tuliskan keputusan yang adil dan alasanmu.",
+    "rubric": [
+      "Unsur A (2 poin): Memberi giliran kepada teman yang belum mendapat giliran atau mengikuti aturan giliran yang sama.",
+      "Unsur B (2 poin): Semua teman memiliki hak bermain atau berhak memperoleh kesempatan yang adil."
+    ],
+    "acceptedAnswers": [
+      "Berikan giliran kepada teman lain karena semua berhak bermain.",
+      "Ikuti urutan giliran agar kesempatan bermain adil.",
+      "Jangan memberi giliran tambahan sebelum semua mendapat kesempatan karena hak mereka sama."
+    ]
+  },
+  {
+    "id": 36,
+    "type": "short",
+    "prompt": "Apa yang harus dijamin negara terkait agama dan kepercayaan warga, dan mengapa negara tidak boleh memaksakan satu keyakinan?",
+    "rubric": [
+      "Unsur A (2 poin): Kebebasan memeluk atau menjalankan agama dan kepercayaan masing-masing.",
+      "Unsur B (2 poin): Menghormati perbedaan keyakinan atau hak warga, menjaga kerukunan."
+    ],
+    "acceptedAnswers": [
+      "Negara menjamin kebebasan beragama agar perbedaan keyakinan dihormati.",
+      "Warga bebas menjalankan kepercayaan agar hak setiap warga dihormati.",
+      "Kebebasan memeluk agama harus dijamin supaya masyarakat tetap rukun."
+    ]
+  },
+  {
+    "id": 37,
+    "type": "short",
+    "prompt": "Jika keputusan hasil musyawarah lembaga perwakilan rakyat berbeda dari pendapatmu, bagaimana sikapmu dan apa alasannya?",
+    "rubric": [
+      "Unsur A (2 poin): Menghormati, menerima, atau menjunjung tinggi hasil musyawarah.",
+      "Unsur B (2 poin): Keputusan merupakan hasil kesepakatan bersama atau menghargai proses musyawarah mufakat."
+    ],
+    "acceptedAnswers": [
+      "Menghormati keputusan karena telah disepakati bersama.",
+      "Menerima hasilnya karena dicapai melalui musyawarah mufakat.",
+      "Menjunjung tinggi keputusan sebagai hasil pembahasan bersama."
+    ]
+  },
+  {
+    "id": 38,
+    "type": "short",
+    "prompt": "Kelas VII akan menggunakan uang kas untuk kegiatan bersama. Sebagian siswa mengusulkan pembelian alat kebersihan karena beberapa peralatan sudah rusak. Siswa lain ingin membeli perlengkapan untuk menghias kelas agar suasana belajar lebih nyaman. Uang kas belum cukup untuk memenuhi kedua usulan sekaligus. Saat pembicaraan berlangsung, seorang siswa terus berbicara dan beberapa teman yang ingin menyampaikan alasan tidak memperoleh kesempatan. Ketua kelas khawatir jika keputusan segera ditetapkan, sebagian siswa akan merasa tidak dilibatkan. Ia ingin mencari keputusan yang dapat diterima bersama dan tetap memberikan ruang kepada teman-temannya untuk menjelaskan kebutuhan yang mereka anggap penting.\n\nTuliskan satu langkah yang sebaiknya dilakukan pengurus kelas untuk menyelesaikan perbedaan tersebut dan satu sikap yang harus ditunjukkan ketika mendengarkan usulan teman.",
+    "rubric": [
+      "Unsur A (2 poin): Mengadakan musyawarah atau membahas usulan bersama untuk mencapai kesepakatan.",
+      "Unsur B (2 poin): Menghargai pendapat, tidak memotong pembicaraan, atau memberi kesempatan yang sama untuk berbicara."
+    ],
+    "acceptedAnswers": [
+      "Bermusyawarah dan menghargai pendapat setiap teman.",
+      "Membahas usulan sampai sepakat serta mendengarkan tanpa menyela.",
+      "Mencari mufakat dan memberi semua teman kesempatan berbicara."
+    ]
+  },
+  {
+    "id": 39,
+    "type": "short",
+    "prompt": "Sejumlah daerah mengalami kekurangan air bersih pada musim kemarau. Daerah yang memiliki persediaan air cukup diminta bekerja sama dengan daerah yang kesulitan. Dalam rapat antardaerah, sebagian perwakilan hanya ingin membahas manfaat bagi wilayahnya sendiri. Padahal beberapa wilayah lain membutuhkan bantuan segera agar masyarakat dapat memenuhi kebutuhan sehari-hari. Petugas telah menyampaikan keadaan setiap wilayah dan mengusulkan kerja sama yang tidak mengabaikan kebutuhan warga di daerah penyedia air. Para perwakilan harus menentukan sikap yang tepat sebagai bagian dari bangsa Indonesia. Mereka juga perlu menentukan kepentingan yang harus menjadi dasar keputusan bersama tersebut.\n\nTuliskan satu sikap yang sebaiknya ditunjukkan para perwakilan daerah dan jelaskan kepentingan apa yang harus didahulukan sesuai sila ketiga.",
+    "rubric": [
+      "Unsur A (2 poin): Bekerja sama, membantu daerah yang membutuhkan, atau menyepakati langkah bersama.",
+      "Unsur B (2 poin): Kepentingan atau keselamatan bangsa dan negara di atas kepentingan daerah, pribadi, atau golongan."
+    ],
+    "acceptedAnswers": [
+      "Bekerja sama menyalurkan bantuan dengan mengutamakan keselamatan bangsa.",
+      "Membantu wilayah lain karena kepentingan bersama lebih utama daripada kepentingan daerah.",
+      "Menyepakati pembagian bantuan demi keselamatan masyarakat Indonesia, bukan keuntungan kelompok."
+    ]
+  },
+  {
+    "id": 40,
+    "type": "short",
+    "prompt": "Pemerintah daerah menerima laporan bahwa sejumlah siswa mengalami kesulitan mengikuti pelajaran karena tidak memiliki perlengkapan belajar yang memadai. Sekolah mendata kebutuhan siswa dari berbagai lingkungan. Persediaan bantuan terbatas sehingga belum semua permintaan dapat dipenuhi sekaligus. Ada usulan agar bantuan diberikan terlebih dahulu kepada keluarga yang dikenal petugas, meskipun keluarga tersebut sudah memiliki perlengkapan yang cukup. Guru mengingatkan bahwa program bantuan disusun untuk membantu siswa yang kesulitan dan bukan untuk menguntungkan pihak tertentu. Pemerintah daerah harus menentukan cara penyaluran yang tepat agar bantuan dapat mendukung kehidupan masyarakat yang lebih baik.\n\nTuliskan satu tindakan pemerintah yang tepat dalam situasi tersebut dan tujuan tindakan itu menurut nilai keadilan sosial.",
+    "rubric": [
+      "Unsur A (2 poin): Memberi bantuan pendidikan kepada siswa yang membutuhkan atau membagikan bantuan berdasarkan kebutuhan.",
+      "Unsur B (2 poin): Menjamin hak atau kesempatan pendidikan secara adil, atau memajukan kesejahteraan rakyat secara merata."
+    ],
+    "acceptedAnswers": [
+      "Memberi perlengkapan kepada siswa yang membutuhkan agar kesempatan belajar lebih adil.",
+      "Menyalurkan bantuan berdasarkan kebutuhan untuk menjamin hak pendidikan.",
+      "Memprioritaskan siswa yang kekurangan perlengkapan agar kesejahteraan semakin merata."
+    ]
+  }
+];
+const {useState,useEffect,useRef} = React;
+const QUESTIONS = new Map(rawQuestionsData.map(q=>[q.id,q]));
+const N = rawQuestionsData.length;
+const LABELS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const paths = {book:'M4 19V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0 0 4h14M4 19a2 2 0 0 1 2-2h14M8 7h8M8 11h6',clock:'M12 8v4l3 2M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20',check:'m5 12 4 4L19 6',shield:'M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11ZM9 12l2 2 4-4',left:'m15 18-6-6 6-6',right:'m9 18 6-6-6-6',alert:'M12 9v4m0 4h.01M10.3 3.9 2.1 18a2 2 0 0 0 1.7 3h16.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z',send:'m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13',user:'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8'};
+function Icon({name,size=20}){return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]||paths.book}/></svg>}
+function shuffle(items){const a=items.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function normalize(v){return String(v??'').normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('id-ID');}
+function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function validDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T00:00:00Z');return !isNaN(d)&&d.toISOString().slice(0,10)===s;}
+function token(){const a=new Uint8Array(16);crypto.getRandomValues(a);return Array.from(a,v=>v.toString(16).padStart(2,'0')).join('');}
+function secondsLeft(s,now=Date.now()){return Math.max(0,Math.min(EXAM.duration,Math.ceil((s.deadline-now)/1000)));}
+function timeText(sec){return [Math.floor(sec/3600),Math.floor(sec/60)%60,sec%60].map(n=>String(n).padStart(2,'0')).join(':');}
+function answered(q,v){return q.type==='multi'?Array.isArray(v)&&v.length>0:q.type==='short'?typeof v==='string'&&v.trim().length>0:typeof v==='string'&&v.length>0;}
+function labelFor(s,id,opt){const idx=(s.optionOrder[id]||[]).indexOf(opt);return idx<0?'—':LABELS[idx];}
+function labelList(s,id,opts){return opts.map(o=>labelFor(s,id,o)).sort().join(', ');}
+function grade(s){let benar=0,salah=0,kosong=0;const details=rawQuestionsData.map(q=>{const a=s.answers[q.id];let status='KOSONG',chosen='—',key='—';if(q.type==='mc'){key=labelFor(s,q.id,q.correctAnswer);if(answered(q,a)){chosen=labelFor(s,q.id,a);status=a===q.correctAnswer?'BENAR':'SALAH';}}else if(q.type==='multi'){key=labelList(s,q.id,q.correctAnswers);if(answered(q,a)){const set=new Set(a);chosen=labelList(s,q.id,Array.from(set));status=set.size===q.correctAnswers.length&&q.correctAnswers.every(x=>set.has(x))?'BENAR':'SALAH';}}else if(q.type==='short'){key=q.acceptedAnswers.join(' / ');if(answered(q,a)){chosen=a.trim();status=q.acceptedAnswers.some(x=>normalize(x)===normalize(a))?'BENAR':'SALAH';}}if(status==='BENAR')benar++;else if(status==='SALAH')salah++;else kosong++;return {id:q.id,status,chosen,key,review:q.type==='short'&&status==='SALAH'};});const rincianJawaban=details.map(d=>`Soal ${d.id}: ${d.status}${d.status==='SALAH'?` (Pilih: ${d.chosen.replace(/ \| /g,' ｜ ')}, Kunci: ${d.key})`:''}`).join(' | ');return {skor:Number((benar/N*100).toFixed(2)),benar,salah,kosong,details,rincianJawaban};}
+function makeSession(identity,now=Date.now()){const optionOrder={};rawQuestionsData.forEach(q=>{if(q.options)optionOrder[q.id]=shuffle(q.options.map(o=>o.id));});return {version:SESSION_VERSION,examId:EXAM.id,...identity,token:token(),order:shuffle(rawQuestionsData.map(q=>q.id)),optionOrder,answers:{},active:0,deadline:now+EXAM.duration*1000,remaining:EXAM.duration,violations:0,warning:false,status:'active',reason:''};}
+function sameIds(a,b){return Array.isArray(a)&&a.length===b.length&&new Set(a).size===b.length&&b.every(x=>a.includes(x));}
+function validateSession(s){if(!s||s.version!==SESSION_VERSION||s.examId!==EXAM.id||!['active','pending'].includes(s.status)||!/^([a-f0-9]{32})$/.test(s.token)||!sameIds(s.order,rawQuestionsData.map(q=>q.id))||!s.optionOrder||!s.answers||!Number.isInteger(s.active)||s.active<0||s.active>=N||!Number.isFinite(s.deadline)||!Number.isInteger(s.remaining)||s.remaining<0||s.remaining>EXAM.duration||!Number.isInteger(s.violations)||s.violations<0||s.violations>2||typeof s.warning!=='boolean'||typeof s.nama!=='string'||!s.nama.trim()||typeof s.kelas!=='string'||!s.kelas.trim()||!validDate(s.tanggal))return false;return rawQuestionsData.every(q=>{const v=s.answers[q.id];if(q.options&&!sameIds(s.optionOrder[q.id],q.options.map(o=>o.id)))return false;if(v===undefined)return true;if(q.type==='short')return typeof v==='string'&&v.length<=1000;if(q.type==='multi')return Array.isArray(v)&&new Set(v).size===v.length&&v.every(x=>s.optionOrder[q.id].includes(x));return s.optionOrder[q.id].includes(v);});}
+function loadSession(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return {session:null,error:''};const s=JSON.parse(raw);if(!validateSession(s))return {session:null,error:'Sesi tersimpan tidak sesuai dengan versi ujian ini atau datanya rusak. Data tidak dihapus otomatis.'};return {session:s,error:''};}catch(e){return {session:null,error:'LocalStorage tidak dapat dibaca. Periksa izin penyimpanan browser sebelum memulai.'};}}
+function validURL(value){try{const u=new URL(value.trim());return u.protocol==='https:'&&u.hostname==='script.google.com'&&/^\/macros\/s\/[A-Za-z0-9_-]+\/exec\/?$/.test(u.pathname)&&!u.search&&!u.hash;}catch(e){return false;}}
+function configuredURL(){return validURL(GOOGLE_SHEETS_WEB_APP_URL)?GOOGLE_SHEETS_WEB_APP_URL.trim():'';}
+function payloadFor(s){const g=grade(s);return {token:s.token,nama:s.nama,kelas:s.kelas,tanggal:s.tanggal,skor:g.skor,pelanggaran:s.violations,keterangan:s.reason,rincianJawaban:g.rincianJawaban,mapel:EXAM.mapel,jenisUjian:EXAM.jenis,kelasUjian:EXAM.kelas,examId:EXAM.id,jumlahSoal:N,benar:g.benar,salah:g.salah,kosong:g.kosong,jawabanIsian:rawQuestionsData.filter(q=>q.type==='short').map(q=>({id:q.id,jawaban:s.answers[q.id]||'',status:g.details.find(d=>d.id===q.id).status})),urutanSoal:s.order,urutanOpsi:s.optionOrder};}
+function jsonp(url,tx,ms=6500){return new Promise((resolve,reject)=>{const name='cbtCallback_'+token();const script=document.createElement('script');let done=false;let timer;const finish=(err,data)=>{if(done)return;done=true;clearTimeout(timer);script.remove();delete window[name];err?reject(err):resolve(data);};window[name]=data=>finish(null,data);script.onerror=()=>finish(new Error('Konfirmasi server tidak dapat dibuka.'));timer=setTimeout(()=>finish(new Error('Konfirmasi server melewati batas waktu.')),ms);const u=new URL(url);u.searchParams.set('action','status');u.searchParams.set('token',tx);u.searchParams.set('callback',name);u.searchParams.set('_',Date.now());script.src=u.toString();document.head.appendChild(script);});}
+const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function postPayload(url,payload){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),signal:controller.signal,credentials:'omit',redirect:'follow'});}finally{clearTimeout(timer);}}
+async function sendAndVerify(url,payload){if(!validURL(url))throw new Error('URL Web App belum dikonfigurasi atau tidak valid.');let last='Transaksi belum terkonfirmasi.';const confirmed=d=>d&&d.status==='success'&&d.recorded===true&&d.token===payload.token&&d.examId===EXAM.id;try{const d=await jsonp(url,payload.token,3500);if(confirmed(d))return d;}catch(e){last=e.message;}try{await postPayload(url,payload);}catch(e){last='POST belum dapat dipastikan: '+e.message;}for(let i=0;i<5;i++){if(i)await delay(1500);try{const d=await jsonp(url,payload.token);if(confirmed(d))return d;if(d?.message)last=d.message;}catch(e){last=e.message;}}throw new Error(last);}
+function Modal({title,children,actions,danger=false}){const box=useRef(null);useEffect(()=>{box.current?.focus();},[]);return <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-sm" role="presentation"><section ref={box} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className="modal-panel card fade w-full max-w-lg p-6 sm:p-8 outline-none" onKeyDown={e=>{if(e.key==='Tab'){const nodes=Array.from(e.currentTarget.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[href]'));if(nodes.length){const a=nodes[0],b=nodes[nodes.length-1];if(e.shiftKey&&(document.activeElement===a||document.activeElement===e.currentTarget)){e.preventDefault();b.focus();}else if(!e.shiftKey&&(document.activeElement===b||document.activeElement===e.currentTarget)){e.preventDefault();a.focus();}}}}}><div className={'mb-4 flex h-12 w-12 items-center justify-center rounded-2xl '+(danger?'bg-red-100 text-red-700':'bg-sky-100 text-sky-700')}><Icon name={danger?'alert':'shield'} size={26}/></div><h2 className="mb-3 text-xl font-bold text-slate-900">{title}</h2><div className="mb-6 leading-relaxed text-slate-600">{children}</div><div className="flex flex-wrap justify-end gap-2">{actions}</div></section></div>}
+function Header({s,remaining}){return <header className="mb-6 flex flex-wrap items-center justify-between gap-4 text-white"><div className="flex items-center gap-3"><div className="rounded-2xl border border-white/25 bg-white/10 p-3"><Icon name="book" size={28}/></div><div><div className="text-xs font-semibold uppercase tracking-[.2em] text-cyan-200">Computer-Based Test</div><h1 className="text-xl font-extrabold sm:text-3xl">{EXAM.mapel}</h1><p className="text-sm text-sky-100">{EXAM.jenis} · Kelas {EXAM.kelas}</p></div></div>{s&&<div className="flex items-center gap-3"><div className="hidden max-w-52 text-right sm:block"><div className="truncate font-semibold">{s.nama}</div><div className="text-xs text-sky-100">Kelas {s.kelas}</div></div>{remaining!==undefined&&<div className={'flex items-center gap-2 rounded-2xl border px-4 py-3 tabular '+(remaining<=300?'border-red-300 bg-red-700':'border-white/25 bg-white/10')}><Icon name="clock"/><span className="text-lg font-bold">{timeText(remaining)}</span></div>}</div>}</header>}
+function Login({onStart,url,storageError,onReset}){const [form,setForm]=useState({nama:'',kelas:'',tanggal:localDate()});const [error,setError]=useState('');const change=(k,v)=>setForm(x=>({...x,[k]:v}));return <div className="grid items-start gap-5 lg:grid-cols-[1fr_1.1fr]"><section className="rounded-3xl border border-white/20 bg-white/10 p-7 text-white sm:p-10"><span className="inline-flex rounded-full bg-cyan-300/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan-100">Asesmen harian</span><h2 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl">{EXAM.topik}</h2><p className="mt-4 leading-relaxed text-sky-100">Kerjakan setiap soal dengan teliti dan jujur. Jawaban tersimpan otomatis pada perangkat ini selama ujian.</p><div className="mt-7 grid grid-cols-2 gap-3"><div className="rounded-2xl bg-white/10 p-4"><div className="text-2xl font-bold">{N}</div><div className="text-sm text-sky-100">Butir soal</div></div><div className="rounded-2xl bg-white/10 p-4"><div className="text-2xl font-bold">90</div><div className="text-sm text-sky-100">Menit</div></div></div><div className="mt-6 flex gap-3 text-sm text-sky-100"><Icon name="shield" size={24}/><span>Jangan berpindah tab atau keluar dari layar penuh. Pelanggaran kedua mengakhiri ujian otomatis.</span></div></section><section className="card p-6 sm:p-8"><div className="mb-6"><p className="text-xs font-bold uppercase tracking-wider text-sky-700">Identitas peserta</p><h2 className="mt-1 text-2xl font-bold text-slate-900">Masuk ke ujian</h2></div>{storageError&&<div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">{storageError}<button className="mt-2 block font-bold underline" type="button" onClick={onReset}>Hapus sesi bermasalah</button></div>}{!url&&<p role="alert" className="mb-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">Ujian belum siap digunakan. Silakan hubungi guru.</p>}<form className="space-y-4" onSubmit={e=>{e.preventDefault();const v={nama:form.nama.trim(),kelas:form.kelas.trim(),tanggal:form.tanggal};if(!v.nama||!v.kelas||!validDate(v.tanggal)){setError('Lengkapi nama, kelas, dan tanggal yang valid.');return;}try{onStart(v);setError('');}catch(e){setError(e.message);}}}><label className="block text-sm font-semibold text-slate-700">Nama lengkap<input className="field mt-2" autoComplete="name" required maxLength={120} value={form.nama} onChange={e=>change('nama',e.target.value)} placeholder="Nama sesuai daftar hadir"/></label><label className="block text-sm font-semibold text-slate-700">Kelas<input className="field mt-2" required maxLength={40} value={form.kelas} onChange={e=>change('kelas',e.target.value)} placeholder="Contoh: VII A"/></label><label className="block text-sm font-semibold text-slate-700">Tanggal ujian<input className="field mt-2" type="date" required value={form.tanggal} onChange={e=>change('tanggal',e.target.value)}/></label>{error&&<p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-800">{error}</p>}<button className="btn primary w-full" disabled={!url||!!storageError} type="submit">Mulai Ujian <Icon name="right"/></button></form></section></div>}
+function QuestionCard({s,onAnswer,locked}){const q=QUESTIONS.get(s.order[s.active]);const value=s.answers[q.id];return <article className="card p-5 sm:p-8" key={q.id}><div className="mb-5 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">Soal {s.active+1} / {N}</span><span className="text-xs font-bold uppercase tracking-wide text-slate-500">{q.type==='short'?'Isian singkat':q.type==='multi'?'Pilihan ganda kompleks':'Pilihan ganda'}</span></div><div className="question-text mb-5 text-base font-medium text-slate-800 sm:text-lg">{q.prompt}</div>{q.image&&<img className="mb-4 max-h-96 max-w-full rounded-xl object-contain" src={q.image} alt="Ilustrasi pendukung soal"/>}{q.table&&<div className="mb-5 overflow-x-auto"><table className="w-full border-collapse text-left text-sm"><thead><tr>{q.table.headers.map((x,i)=><th key={i} className="border bg-sky-100 p-3">{x}</th>)}</tr></thead><tbody>{q.table.rows.map((r,i)=><tr key={i}>{r.map((x,j)=><td key={j} className="border p-3">{x}</td>)}</tr>)}</tbody></table></div>}{q.type==='short'?<div><label htmlFor="short-answer" className="mb-2 block text-sm text-slate-600">Jawab dengan singkat dan jelas (1–2 kalimat atau dua frasa).</label><textarea id="short-answer" className="field min-h-32 resize-y leading-relaxed" value={value||''} maxLength={1000} disabled={locked} onChange={e=>onAnswer(q.id,e.target.value)} placeholder="Ketik jawaban di sini…"/><div className="text-right text-xs text-slate-500">{(value||'').length}/1000</div></div>:<fieldset disabled={locked} className="space-y-3"><legend className="mb-3 text-sm text-slate-500">{q.type==='multi'?'Pilih semua jawaban yang tepat.':'Pilih satu jawaban yang paling tepat.'}</legend>{s.optionOrder[q.id].map((id,i)=>{const o=q.options.find(x=>x.id===id);const selected=q.type==='multi'?(value||[]).includes(id):value===id;return <label key={id} className={'flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition '+(selected?'border-sky-600 bg-sky-50 ring-1 ring-sky-600':'border-slate-200 hover:border-sky-300 hover:bg-slate-50')}><input type={q.type==='multi'?'checkbox':'radio'} name="answer" checked={selected} className="mt-1 h-4 w-4 shrink-0 accent-sky-700" onChange={()=>onAnswer(q.id,q.type==='multi'?(selected?(value||[]).filter(x=>x!==id):[...(value||[]),id]):id)}/><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sm font-bold text-sky-800">{LABELS[i]}</span><span className="min-w-0 flex-1 leading-relaxed text-slate-800">{o.text}</span></label>})}</fieldset>}<div className={'mt-5 text-sm font-semibold '+(answered(q,value)?'text-emerald-700':'text-slate-500')}>{answered(q,value)?'✓ Jawaban telah diisi':'Belum dijawab'}</div>{answered(q,value)&&q.type!=='short'&&<button disabled={locked} type="button" className="mt-2 text-sm font-semibold text-slate-500 underline" onClick={()=>onAnswer(q.id,q.type==='multi'?[]:'')}>Kosongkan jawaban</button>}</article>}
+function NavigationPanel({s,onNavigate,onFinish,locked}){const count=s.order.filter(id=>answered(QUESTIONS.get(id),s.answers[id])).length;return <aside className="card h-fit p-5 lg:sticky lg:top-4"><div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Navigasi soal</h2><span className="text-sm font-bold text-sky-700">{count}/{N}</span></div><div className="my-4 h-2 overflow-hidden rounded-full bg-slate-100"><div className="progress-bar h-full rounded-full bg-emerald-500" style={{width:`${count/N*100}%`}}/></div><div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-5">{s.order.map((id,i)=>{const done=answered(QUESTIONS.get(id),s.answers[id]);return <button type="button" key={id} disabled={locked} onClick={()=>onNavigate(i)} aria-label={`Soal ${i+1}, ${done?'sudah dijawab':'belum dijawab'}`} aria-current={i===s.active?'step':undefined} className={'h-10 rounded-xl border text-sm font-bold '+(done?'border-emerald-200 bg-emerald-100 text-emerald-800':'border-slate-200 bg-slate-50 text-slate-700')+(i===s.active?' ring-2 ring-sky-600 ring-offset-1':'')}>{i+1}</button>})}</div><div className="my-4 flex flex-wrap gap-3 text-xs text-slate-600"><span>🟢 Terjawab</span><span>⚪ Kosong</span><span>🔵 Aktif</span></div><div className="mb-4 rounded-xl bg-slate-50 p-3 text-sm text-slate-600">Pelanggaran: <b className={s.violations?'text-red-700':'text-slate-800'}>{s.violations}/2</b></div><button type="button" disabled={locked} className="btn primary w-full" onClick={onFinish}><Icon name="send"/> Selesai & Kumpulkan</button></aside>}
+function ResultCard({s,sending,confirmed,error,onRetry,onExit}){const g=grade(s);return <section className="card p-5 sm:p-8"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-wider text-sky-700">Hasil ujian</p><h2 className="mt-1 text-2xl font-bold text-slate-900">{EXAM.jenis}</h2><p className="text-slate-600">{s.nama} · Kelas {s.kelas} · {s.tanggal}</p><p className="mt-1 text-sm text-slate-500">{s.reason}</p></div><div className="rounded-2xl bg-sky-50 px-7 py-4 text-center"><div className="text-xs font-bold uppercase tracking-wider text-sky-700">Nilai otomatis</div><div className="tabular text-5xl font-extrabold text-sky-800">{g.skor.toFixed(2)}</div><div className="text-xs text-slate-500">dari 100</div></div></div><div className="my-6 grid grid-cols-2 gap-3 sm:grid-cols-4">{[['Benar',g.benar,'bg-emerald-50 text-emerald-800'],['Salah',g.salah,'bg-red-50 text-red-800'],['Kosong',g.kosong,'bg-slate-100 text-slate-700'],['Pelanggaran',s.violations,'bg-amber-50 text-amber-800']].map(([k,v,c])=><div key={k} className={'rounded-2xl p-4 '+c}><div className="text-xs font-semibold uppercase">{k}</div><div className="text-2xl font-bold">{v}</div></div>)}</div><div role="status" className={'mb-5 rounded-2xl border p-4 '+(confirmed?'border-emerald-200 bg-emerald-50 text-emerald-800':'border-amber-200 bg-amber-50 text-amber-900')}><div className="flex items-center gap-2 font-bold"><Icon name={confirmed?'check':'clock'}/>{confirmed?'Data telah tercatat di Google Sheets':sending?'Mengirim dan menunggu konfirmasi server…':'Data belum terkonfirmasi'}</div>{!confirmed&&<p className="mt-1 text-sm">Lembar ujian terkunci. Progres dan token tetap tersimpan; jangan hapus penyimpanan browser.</p>}{error&&<p className="mt-2 text-sm wordwrap">{error}</p>}{!confirmed&&!sending&&<><div className="mt-3 flex flex-wrap gap-2"><button className="btn primary" onClick={onRetry}>Kirim ulang nilai</button></div></>}</div><p className="mb-5 text-sm text-slate-600">Penilaian isian menggunakan pencocokan variasi jawaban dokumen. Guru dapat memeriksa jawaban lain yang semakna pada laporan.</p><details className="rounded-2xl border border-slate-200 p-4"><summary className="cursor-pointer font-bold text-slate-800">Rincian jawaban (urutan tampilan ujian)</summary><div className="mt-4 space-y-3">{s.order.map((id,i)=>{const d=g.details.find(x=>x.id===id);return <div key={id} className="rounded-xl bg-slate-50 p-3 text-sm wordwrap"><div className="flex flex-wrap justify-between gap-2"><b>Soal {i+1}</b><b className={d.status==='BENAR'?'text-emerald-700':d.status==='SALAH'?'text-red-700':'text-slate-500'}>{d.status}</b></div><p className="mt-1 text-slate-600">Jawaban: {d.chosen}</p>{confirmed&&d.status==='SALAH'&&<p className="mt-1 text-slate-600">Kunci: {d.key}</p>}{d.review&&<p className="mt-1 text-amber-800">Perlu ditinjau guru jika jawaban bermakna sama.</p>}</div>})}</div></details>{confirmed&&<button className="btn secondary mt-5" onClick={onExit}>Kembali ke halaman login</button>}</section>}
+function App(){
+ const [initial]=useState(loadSession);const [s,setS]=useState(initial.session);const current=useRef(initial.session);const [page,setPage]=useState(initial.session?'resume':'login');const pageRef=useRef(initial.session?'resume':'login');const [modal,setModal]=useState(null);const modalRef=useRef(null);const url=configuredURL();const [storageError,setStorageError]=useState(initial.error);const [saveWarning,setSaveWarning]=useState('');const [fsWarning,setFsWarning]=useState('');const [sending,setSending]=useState(false);const [confirmed,setConfirmed]=useState(false);const [sendError,setSendError]=useState('');const busy=useRef(false);const alive=useRef(true);const fsArmed=useRef(false);const episode=useRef(false);const lastViolation=useRef(0);const fullscreenGeneration=useRef(0);const actionRef=useRef(null);
+ function navigatePage(p){pageRef.current=p;setPage(p);}
+ function showModal(m){modalRef.current=m;setModal(m);}
+ function persist(next,strict=false){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(next));setSaveWarning('');return true;}catch(e){setSaveWarning('Penyimpanan lokal gagal. Jangan tutup halaman ini; hubungi guru.');if(strict)throw new Error('LocalStorage tidak dapat menyimpan sesi. Periksa izin penyimpanan dan ruang browser.');return false;}}
+ function commit(next,strict=false){persist(next,strict);current.current=next;setS(next);}
+ function enterFullscreen(){const gen=++fullscreenGeneration.current;fsArmed.current=!!document.fullscreenElement;if(document.fullscreenElement){setFsWarning('');return;}const el=document.documentElement;if(!el.requestFullscreen){setFsWarning('Browser tidak mendukung layar penuh. Pengawasan perpindahan tab tetap aktif.');return;}try{Promise.resolve(el.requestFullscreen()).then(()=>{if(!alive.current||gen!==fullscreenGeneration.current||pageRef.current!=='exam')return;fsArmed.current=!!document.fullscreenElement;setFsWarning(fsArmed.current?'':'Layar penuh belum aktif. Pengawasan tab tetap aktif.');}).catch(()=>{if(alive.current&&gen===fullscreenGeneration.current&&pageRef.current==='exam'){fsArmed.current=false;setFsWarning('Layar penuh ditolak browser. Pengawasan tab tetap aktif.');}});}catch(e){fsArmed.current=false;setFsWarning('Layar penuh tidak dapat diaktifkan. Pengawasan tab tetap aktif.');}}
+ function exitFullscreen(){++fullscreenGeneration.current;fsArmed.current=false;if(document.fullscreenElement&&document.exitFullscreen){try{Promise.resolve(document.exitFullscreen()).catch(()=>{});}catch(e){}}}
+ async function submitPending(target=current.current){if(!target||target.status!=='pending'||busy.current)return;busy.current=true;setSending(true);setConfirmed(false);setSendError('');try{const payload=payloadFor(target);await sendAndVerify(url,payload);if(!alive.current)return;const saved=current.current;if(!saved||saved.token!==target.token)return;const done={...saved,status:'confirmed'};current.current=done;setS(done);setConfirmed(true);try{localStorage.removeItem(STORAGE_KEY);setSaveWarning('');}catch(e){setSaveWarning('Data sudah tercatat, tetapi sesi lokal belum dapat dihapus. Token mencegah duplikasi saat dikirim ulang.');}}catch(e){if(alive.current)setSendError(e.message||'Pengiriman belum terkonfirmasi.');}finally{busy.current=false;if(alive.current)setSending(false);}}
+ function finish(reason,source=current.current){if(!source||source.status!=='active')return;const next={...source,remaining:secondsLeft(source),status:'pending',warning:false,reason};commit(next);showModal(null);navigatePage('result');exitFullscreen();submitPending(next);}
+ function start(identity){if(!url)throw new Error('Ujian belum siap digunakan. Silakan hubungi guru.');if(storageError)throw new Error(storageError);const next=makeSession(identity);commit(next,true);episode.current=false;lastViolation.current=0;setConfirmed(false);setSendError('');showModal(null);navigatePage('exam');enterFullscreen();}
+ function resume(){const old=current.current;if(!old)return;if(old.status==='pending'){navigatePage('result');return;}const next={...old,remaining:secondsLeft(old)};if(next.remaining<=0){finish('Waktu habis',next);return;}if(next.violations>=2){finish('Dihentikan: dua pelanggaran',next);return;}commit(next);episode.current=next.warning;lastViolation.current=0;navigatePage('exam');showModal(next.warning?'warning':null);enterFullscreen();}
+ function reset(){try{localStorage.removeItem(STORAGE_KEY);setStorageError('');setSaveWarning('');current.current=null;setS(null);setConfirmed(false);setSendError('');showModal(null);navigatePage('login');}catch(e){setStorageError('Sesi tidak dapat dihapus karena penyimpanan browser tidak tersedia.');showModal(null);}}
+ function updateAnswer(id,v){const old=current.current;if(pageRef.current!=='exam'||old?.status!=='active'||old.warning||modalRef.current)return;if(secondsLeft(old)<=0){finish('Waktu habis',old);return;}const answers={...old.answers};if(v===''||(Array.isArray(v)&&!v.length))delete answers[id];else answers[id]=v;commit({...old,answers});}
+ function move(i){const old=current.current;if(pageRef.current!=='exam'||old?.status!=='active'||old.warning||modalRef.current||i<0||i>=N)return;if(secondsLeft(old)<=0){finish('Waktu habis',old);return;}commit({...old,active:i});}
+ function violation(){const old=current.current;if(pageRef.current!=='exam'||old?.status!=='active'||old.warning||episode.current)return;if(secondsLeft(old)<=0){finish('Waktu habis',old);return;}episode.current=true;lastViolation.current=Date.now();const next={...old,violations:Math.min(2,old.violations+1),warning:true};if(next.violations>=2){finish('Dihentikan: dua pelanggaran',next);return;}commit(next);showModal('warning');}
+ function acknowledge(){const old=current.current;if(old?.status!=='active'||!old.warning)return;if(secondsLeft(old)<=0){finish('Waktu habis',old);return;}commit({...old,warning:false});showModal(null);enterFullscreen();if(!document.hidden){episode.current=false;lastViolation.current=Date.now();}}
+ function tick(){const old=current.current;if(pageRef.current!=='exam'||old?.status!=='active')return;const remaining=secondsLeft(old);if(!remaining){finish('Waktu habis',old);return;}if(remaining!==old.remaining)commit({...old,remaining});}
+ actionRef.current={tick,violation,acknowledge};
+ useEffect(()=>{alive.current=true;const examActive=()=>pageRef.current==='exam'&&current.current?.status==='active';const hidden=()=>{if(!examActive())return;if(document.hidden){if(Date.now()-lastViolation.current>=700||!episode.current)actionRef.current.violation();}else if(!current.current.warning){episode.current=false;actionRef.current.tick();}};const full=()=>{if(!examActive())return;if(document.fullscreenElement){fsArmed.current=true;setFsWarning('');if(!current.current.warning&&!document.hidden)episode.current=false;}else if(fsArmed.current){fsArmed.current=false;if(Date.now()-lastViolation.current<700){if(current.current.warning||episode.current)return;}actionRef.current.violation();}};const block=e=>{if(examActive())e.preventDefault();};const key=e=>{if(!examActive())return;const k=e.key.toLowerCase();const ctrl=e.ctrlKey||e.metaKey;if(k==='f12'||(ctrl&&['c','x','v','a','p','s','u','r','t','n','w','l','o','f'].includes(k))||(ctrl&&e.shiftKey&&['i','j','c','k','r'].includes(k)))e.preventDefault();};const save=()=>{const old=current.current;if(old&&['active','pending'].includes(old.status)){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(old.status==='active'?{...old,remaining:secondsLeft(old)}:old));}catch(e){}}};const interval=setInterval(()=>actionRef.current.tick(),250);document.addEventListener('visibilitychange',hidden);document.addEventListener('fullscreenchange',full);['contextmenu','copy','cut','paste','dragstart'].forEach(x=>document.addEventListener(x,block,true));document.addEventListener('keydown',key,true);window.addEventListener('beforeunload',save);window.addEventListener('pagehide',save);return()=>{alive.current=false;clearInterval(interval);document.removeEventListener('visibilitychange',hidden);document.removeEventListener('fullscreenchange',full);['contextmenu','copy','cut','paste','dragstart'].forEach(x=>document.removeEventListener(x,block,true));document.removeEventListener('keydown',key,true);window.removeEventListener('beforeunload',save);window.removeEventListener('pagehide',save);};},[]);
+ const remaining=s?.remaining??EXAM.duration;const count=s?s.order.filter(id=>answered(QUESTIONS.get(id),s.answers[id])).length:0;const locked=!!modal||s?.status!=='active'||s?.warning;
+ return <main className={'mx-auto min-h-screen max-w-7xl px-4 py-5 sm:px-7 sm:py-8 '+(page==='exam'?'exam-lock':'')}><Header s={page==='exam'||page==='result'?s:null} remaining={page==='exam'?remaining:undefined}/>{saveWarning&&<div role="alert" className="mb-4 rounded-xl bg-amber-100 p-3 text-sm font-semibold text-amber-950">{saveWarning}</div>}{page==='login'&&<Login onStart={start} url={url} storageError={storageError} onReset={()=>showModal('reset')}/>} {page==='resume'&&s&&<section className="card mx-auto max-w-xl p-7 sm:p-9"><div className="mb-4 inline-flex rounded-2xl bg-sky-100 p-3 text-sky-700"><Icon name="clock" size={28}/></div><h2 className="text-2xl font-bold text-slate-900">Sesi Ujian Tersimpan Ditemukan!</h2><p className="mt-2 text-slate-600">{s.nama} · Kelas {s.kelas} · {s.tanggal}</p><div className="my-5 rounded-xl bg-slate-50 p-4 text-sm text-slate-700"><p>Terjawab: {count}/{N}</p><p>Sisa waktu: {timeText(s.status==='active'?secondsLeft(s):s.remaining)}</p><p>Pelanggaran: {s.violations}/2</p><p>Status: {s.status==='pending'?'Menunggu konfirmasi pengiriman':'Ujian belum selesai'}</p></div>{s.status==='pending'?<button className="btn primary w-full" onClick={resume}>Buka hasil & kirim ulang nilai</button>:<div className="flex flex-wrap gap-2"><button className="btn primary flex-1" onClick={resume}>Lanjutkan Ujian</button><button className="btn secondary flex-1" onClick={()=>showModal('reset')}>Mulai Ulang (Hapus Progres)</button></div>}</section>}{page==='exam'&&s&&<><div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white"><span className="flex items-center gap-2"><Icon name="user" size={17}/> {s.nama} · {s.kelas}</span><span>Progres: {count}/{N} terjawab</span><span>{saveWarning?'Autosave bermasalah':'Autosave aktif'}</span></div>{fsWarning&&<div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-amber-100 p-3 text-sm text-amber-950"><span>{fsWarning}</span><button disabled={locked} className="font-bold underline" onClick={enterFullscreen}>Aktifkan layar penuh</button></div>}<div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]"><div><QuestionCard s={s} locked={locked} onAnswer={updateAnswer}/><div className="mt-4 flex flex-wrap justify-between gap-3"><button type="button" disabled={locked||s.active===0} className="btn secondary" onClick={()=>move(s.active-1)}><Icon name="left"/> Sebelumnya</button>{s.active===N-1?<button type="button" disabled={locked} className="btn primary" onClick={()=>showModal('finish')}>Selesai & Kumpulkan <Icon name="send"/></button>:<button type="button" disabled={locked} className="btn primary" onClick={()=>move(s.active+1)}>Selanjutnya <Icon name="right"/></button>}</div></div><NavigationPanel s={s} locked={locked} onNavigate={move} onFinish={()=>showModal('finish')}/></div></>}{page==='result'&&s&&<ResultCard s={s} sending={sending} confirmed={confirmed} error={sendError} onRetry={()=>submitPending()} onExit={()=>{current.current=null;setS(null);navigatePage('login');}}/>}<footer className="mt-8 text-center text-xs text-sky-100/80">CBT · {EXAM.mapel} · Kelas {EXAM.kelas} · {EXAM.jenis}</footer>{modal==='warning'&&<Modal title="PERINGATAN! Pelanggaran pertama" danger actions={<button type="button" className="btn danger w-full" onClick={acknowledge}>Saya mengerti, lanjutkan ujian</button>}>Anda terdeteksi berpindah tab atau keluar dari layar penuh. Pelanggaran berikutnya akan mengakhiri ujian secara otomatis. Kembali ke layar penuh dan tetap berada di halaman ujian.</Modal>}{modal==='finish'&&<Modal title="Kumpulkan jawaban?" actions={<><button className="btn secondary" onClick={()=>showModal(null)}>Periksa lagi</button><button className="btn primary" onClick={()=>finish('Dikumpulkan peserta')}>Ya, kumpulkan</button></>}>Anda telah menjawab {count} dari {N} soal. Masih ada {N-count} soal kosong. Setelah dikumpulkan, jawaban tidak dapat diubah.</Modal>}{modal==='reset'&&<Modal title="Hapus progres ujian?" danger actions={<><button className="btn secondary" onClick={()=>showModal(null)}>Batal</button><button className="btn danger" onClick={reset}>Hapus progres</button></>}>Sesi aktif yang tersimpan akan dihapus dari perangkat ini. Jawaban, waktu dan urutan soal tidak dapat dipulihkan. Sesi menunggu pengiriman tidak dapat dihapus melalui pilihan ini.</Modal>}</main>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
